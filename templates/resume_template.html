@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 40px;
+    font-size: 11pt;
+}
+h1 {
+    margin-bottom: 0;
+}
+.section {
+    margin-top: 20px;
+}
+.section-title {
+    font-weight: bold;
+    border-bottom: 1px solid black;
+    margin-bottom: 5px;
+}
+ul {
+    margin-top: 5px;
+}
+</style>
+</head>
+<body>
+
+<h1>Gregory Dean</h1>
+<p>
+Boise, ID | you@email.com | github.com/xeno-commits
+</p>
+
+<div class="section">
+    <div class="section-title">Professional Summary</div>
+    <p>{{ summary_block }}</p>
+</div>
+
+<div class="section">
+    <div class="section-title">Highlights</div>
+    <ul>
+    {% for bullet in highlights_block %}
+        <li>{{ bullet }}</li>
+    {% endfor %}
+    </ul>
+</div>
+
+<div class="section">
+    <div class="section-title">Skills</div>
+    <p>{{ skills_block }}</p>
+</div>
+
+</body>
+</html>

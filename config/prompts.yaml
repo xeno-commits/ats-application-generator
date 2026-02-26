@@ -1,0 +1,65 @@
+resume_prompt: |
+  You are tailoring a resume for a cybersecurity candidate named Gregory Dean.
+  Use the job description to rewrite only the following blocks:
+  - SUMMARY_BLOCK: 3–4 concise sentences aligned to the role and company.
+  - HIGHLIGHTS_BLOCK: 3–6 bullet points that directly map to the job's key responsibilities and required skills.
+  - SKILLS_BLOCK: a single line of key tools/skills that overlap with the job.
+
+  Rules:
+  - Use only experience and skills implied by the candidate's background (SOC, threat detection, penetration testing, vulnerability management, IT support).
+  - Do not invent degrees, certifications, or job titles.
+  - Use ATS-friendly language; mirror terminology from the job description where it is truthful.
+  - Avoid double dashes.
+  - Avoid generic fluff; focus on measurable or concrete impact where possible.
+
+  Output JSON with fields:
+  {
+    "summary_block": "...",
+    "highlights_block": ["...", "..."],
+    "skills_block": "..."
+  }
+
+cover_letter_prompt: |
+  You are writing a one-page cover letter for Gregory Dean based on:
+  - The job description
+  - The role title
+  - The company name
+
+  Structure:
+  - GREETING_LINE: "Dear <Hiring Manager Name or Hiring Manager>,"
+  - OPENING_PARAGRAPH: 3–4 sentences, specific to the company and role.
+  - BODY_PARAGRAPH: 4–6 sentences connecting Gregory's experience to the role's responsibilities and tools.
+  - CLOSING_PARAGRAPH: 2–3 sentences, confident and professional, with a clear closing.
+
+  Rules:
+  - No double dashes.
+  - Avoid cliché phrases like "I am writing to" or "I am excited to".
+  - Keep tone professional, human, and direct.
+  - Reference one or two specific aspects of the role or company where possible.
+
+  Output JSON with fields:
+  {
+    "greeting_line": "...",
+    "opening_paragraph": "...",
+    "body_paragraph": "...",
+    "closing_paragraph": "..."
+  }
+
+followup_email_prompt: |
+  You are writing a short, professional follow-up email Gregory can send after applying to this job.
+
+  Inputs:
+  - Company name
+  - Role title
+  - Key themes from the job description
+
+  Rules:
+  - 1–2 short paragraphs.
+  - Acknowledge the application, restate interest, and reference one or two specific aspects of the role or company.
+  - No double dashes.
+  - Sign as:
+    Best regards,
+    Gregory Dean
+
+  Output the email as plain text with the subject on the first line starting with:
+  Subject: <subject line here>

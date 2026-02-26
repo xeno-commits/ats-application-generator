@@ -6,22 +6,18 @@ import yaml
 from jinja2 import Environment, FileSystemLoader
 from weasyprint import HTML
 
-# ---------- Paths ----------
 BASE_DIR = Path(__file__).parent
 TEMPLATE_DIR = BASE_DIR / "templates"
 CONFIG_DIR = BASE_DIR / "config"
 OUTPUT_DIR = BASE_DIR / "output"
 OUTPUT_DIR.mkdir(exist_ok=True)
 
-# ---------- Jinja2 environment ----------
 env = Environment(loader=FileSystemLoader(str(TEMPLATE_DIR)))
 
-# ---------- Load default prompts (still for reference / future use) ----------
 with open(CONFIG_DIR / "prompts.yaml", "r", encoding="utf-8") as f:
     DEFAULT_PROMPTS = yaml.safe_load(f)
 
 
-# ---------- Helpers ----------
 
 def sanitize_filename_part(value: str) -> str:
     """Keep company name safe for filenames."""
@@ -42,11 +38,9 @@ def call_llm(prompt_template: str, job_description: str, context: dict):
 
     Later, you can replace this with a real OpenAI call.
     """
-    # Very simple detection based on the prompt content
     prompt_lower = prompt_template.lower()
 
     if "summary_block" in prompt_lower and "highlights_block" in prompt_lower:
-        # Resume data
         return {
             "summary_block": (
                 f"Cybersecurity analyst with hands-on experience in SOC workflows, "
@@ -62,7 +56,6 @@ def call_llm(prompt_template: str, job_description: str, context: dict):
         }
 
     if "greeting_line" in prompt_lower and "opening_paragraph" in prompt_lower:
-        # Cover letter data
         company = context.get("company_name", "your company")
         role = context.get("role_title", "this role")
         return {
@@ -82,7 +75,6 @@ def call_llm(prompt_template: str, job_description: str, context: dict):
             ),
         }
 
-    # Follow-up email (plain text)
     company = context.get("company_name", "your company")
     role = context.get("role_title", "this role")
     return (
@@ -109,14 +101,11 @@ def render_pdf(template_name: str, context: dict, output_path: Path) -> bytes:
         return f.read()
 
 
-# ---------- Streamlit UI ----------
-
 st.set_page_config(page_title="Application Pack Generator", layout="wide")
 st.title("Application Pack Generator (Mock Mode – No API Calls)")
 
 left_col, middle_col, right_col = st.columns([3, 1, 3])
 
-# Session state for outputs
 if "resume_pdf" not in st.session_state:
     st.session_state["resume_pdf"] = None
 if "cl_pdf" not in st.session_state:
@@ -124,7 +113,6 @@ if "cl_pdf" not in st.session_state:
 if "email_text" not in st.session_state:
     st.session_state["email_text"] = ""
 
-# Left: Inputs
 with left_col:
     st.subheader("Inputs")
 
@@ -137,12 +125,10 @@ with left_col:
         st.text_area("Cover Letter Prompt Template", value=DEFAULT_PROMPTS["cover_letter_prompt"], height=200)
         st.text_area("Follow-up Email Prompt Template", value=DEFAULT_PROMPTS["followup_email_prompt"], height=200)
 
-# Middle: Button
 with middle_col:
     st.subheader("Action")
     generate = st.button("Generate Application Package", type="primary")
 
-# Main logic
 if generate:
     if not company_name or not jd_text:
         st.error("Please provide at least Company Name and Job Description.")
@@ -155,14 +141,10 @@ if generate:
         }
 
         with st.spinner("Generating mock documents (no API calls)..."):
-            # "Resume" data
             resume_data = call_llm(DEFAULT_PROMPTS["resume_prompt"], jd_text, context)
-            # "Cover letter" data
             cover_data = call_llm(DEFAULT_PROMPTS["cover_letter_prompt"], jd_text, context)
-            # Follow-up email
             follow_data = call_llm(DEFAULT_PROMPTS["followup_email_prompt"], jd_text, context)
 
-            # Resume PDF
             if isinstance(resume_data, dict):
                 resume_pdf_path = OUTPUT_DIR / f"Resume_Greg_{safe_company}.pdf"
                 resume_pdf_bytes = render_pdf("resume_template.html", resume_data, resume_pdf_path)
@@ -170,7 +152,6 @@ if generate:
             else:
                 st.error("Unexpected resume_data format in mock call.")
 
-            # Cover letter PDF
             if isinstance(cover_data, dict):
                 cl_pdf_path = OUTPUT_DIR / f"CoverLetter_Greg_{safe_company}.pdf"
                 cl_pdf_bytes = render_pdf("cover_letter_template.html", cover_data, cl_pdf_path)
@@ -186,7 +167,6 @@ if generate:
 
         st.success("Done! Check the Outputs panel on the right.")
 
-# Right: Outputs
 with right_col:
     st.subheader("Outputs")
 

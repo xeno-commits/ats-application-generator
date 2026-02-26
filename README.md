@@ -46,3 +46,97 @@ Flow:
 ---
 
 ## 📁 Project Structure
+
+ats-tool/
+
+│
+
+├── app.py
+
+├── requirements.txt
+
+├── .gitignore
+
+│
+
+├── templates/
+
+│ ├── resume_template.html
+
+│ └── cover_letter_template.html
+
+│
+
+├── config/
+
+│ └── prompts.yaml
+
+│
+
+└── output/
+
+---
+
+## 🖥️ How To Run Locally
+
+```bash
+### 1️⃣ Create Virtual Environment
+python -m venv .venv
+
+2️⃣ Activate (Windows PowerShell)
+.\.venv\Scripts\Activate
+
+3️⃣ Install Dependencies
+pip install -r requirements.txt
+
+4️⃣ Run Streamlit
+streamlit run app.py
+
+App will open at:
+http://localhost:8501
+```
+---
+
+## 🧠 How It Works (Mock Mode)
+
+**The call_llm() function currently returns structured mock content instead of calling OpenAI.**
+
+**This allows:**
+- UI testing
+- PDF generation testing
+- GitHub-safe publishing
+-  Zero API cost
+
+**to enable real LLM integration later:**
+- Restore OpenAI client logic
+- Add .env with OPENAI_API_KEY
+- Re-enable model calls inside call_llm()
+---
+
+## 🔒 Security Notes
+
+**The following are excluded via .gitignore:**
+- .venv/
+- .env
+- output/
+- Python cache files
+- Never commit API keys to GitHub.
+---
+
+## 📌 Future Improvements
+- Real OpenAI API integration
+- ATS keyword extraction logic
+- Automatic skill matching
+- Role-based resume profile selector
+- Deployment version (optional cloud hosting)
+- Enhanced UI styling
+- Versioned document history
+---
+
+## 🎯 Purpose
+
+**This tool was built to:**
+- Automate repetitive application customization
+- Maintain consistent formatting across documents
+- Improve ATS keyword alignment
+- Reduce manual editing time

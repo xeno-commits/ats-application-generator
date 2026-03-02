@@ -35,8 +35,6 @@ def call_llm(prompt_template: str, job_description: str, context: dict):
     - Test the app
     - Generate PDFs
     - Commit to GitHub safely
-
-    Later, you can replace this with a real OpenAI call.
     """
     prompt_lower = prompt_template.lower()
 
